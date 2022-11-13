@@ -1,6 +1,6 @@
-# Opportunity-330 3D Printer
+# OpportuniXY-330 3D Printer
 
-Opportunity-330 is a 3D printer based on the TRONXY X5SA frame. The bed size is 330mm square. It is designed based on Core-XY kinematics and side mounted linear rails motion system.
+OpportuniXY-330 is a 3D printer based on the TRONXY X5SA frame. The bed size is 330mm square. It is designed based on Core-XY kinematics and side mounted linear rails motion system.
 
 It is work in progress.
 
