@@ -11,7 +11,7 @@
 use <Assembly.scad>
 
 if ($preview) {
-    PreviewAssembly(pos=[-0,  0, 200]);
+    PreviewAssembly(pos=[ 0,  0, 200]);
 } else {
     RenderingAssembly();
 }

@@ -16,53 +16,63 @@ include <vitamins/MidAirCylinder.scad>
 
 version = 3;
 
-module xy_carriage_left(type, size, pos, reverse, additional_idler_type, y_carriage_offset)
+function y_carriage_offset(type) = carriage_total_heights(type).x+1.5 - carriage_pitch_x(carriage_types(type).y)/2;
+
+module xy_carriage_left(type, size, pos)
 {
-    xy_carriage_base(type, size=size, pos=pos, reverse=reverse, y_carriage_offset=y_carriage_offset, additional_idler_type=additional_idler_type);
-    //xy_carriage_upper(type=type, size=size, pos=pos, reverse=reverse, additional_idler_type=additional_idler_type, y_carriage_offset=y_carriage_offset);
-    //xy_carriage_lower(type=type, size=size, pos=pos, reverse=reverse, additional_idler_type=additional_idler_type, y_carriage_offset=y_carriage_offset);
+    xy_carriage_base(type, size=size, pos=pos);
+    //xy_carriage_lower(type=type, size=size, pos=pos);
+    //xy_carriage_upper(type=type, size=size, pos=pos);
 }
 
-module xy_carriage(type, size, pos, reverse, additional_idler_type, y_carriage_offset)
+module xy_carriage_right(type, size, pos)
+{
+    rotate([0, 180, 0])
+        xy_carriage_base(type, size=size, pos=pos);
+}
+
+module xy_carriage(type, size, pos)
 {
     translate([-10, 0, 35/2]) rotate([0,180,0])
-        xy_carriage_upper(type=type, size=size, pos=pos, reverse=reverse, additional_idler_type=additional_idler_type, y_carriage_offset=y_carriage_offset);
+        xy_carriage_upper(type=type, size=size, pos=pos);
     translate([ 10, 0, 35/2])
-        xy_carriage_lower(type=type, size=size, pos=pos, reverse=reverse, additional_idler_type=additional_idler_type, y_carriage_offset=y_carriage_offset);
+        xy_carriage_lower(type=type, size=size, pos=pos);
 }
 
-module xy_carriage_upper(type, size, pos, reverse, additional_idler_type, y_carriage_offset)
+module xy_carriage_upper(type, size, pos)
 {
     intersection() {
-        xy_carriage_base(type, size=size, pos=pos, reverse=reverse, y_carriage_offset=y_carriage_offset, additional_idler_type=additional_idler_type);
-        xy_carriage_slice_mask(type, additional_idler_type, y_carriage_offset);
+        xy_carriage_base(type, size=size, pos=pos);
+        xy_carriage_slice_mask(type);
     }
 }
 
-module xy_carriage_lower(type, size, pos, reverse, additional_idler_type, y_carriage_offset)
+module xy_carriage_lower(type, size, pos)
 {
     difference() {
-        xy_carriage_base(type, size=size, pos=pos, reverse=reverse, y_carriage_offset=y_carriage_offset, additional_idler_type=additional_idler_type);
-        xy_carriage_slice_mask(type, additional_idler_type, y_carriage_offset);
+        xy_carriage_base(type, size=size, pos=pos);
+        xy_carriage_slice_mask(type);
     }
 }
 
-module xy_carriage_slice_mask(type, additional_idler_type, y_carriage_offset) {
-    p1_pr = pulley_pr(idler_type_y_bottom(additional_idler_type));
-    p0_pr = pulley_pr(idler_type_xy_toothed(additional_idler_type));
-    p4_pr = pulley_pr(idler_type_xy_plain(additional_idler_type));
-    p0 = [p1_pr*2 + p0_pr + belt_offset(type).x/2, -p0_pr, 0];
-    p4 = [p4_pr + belt_offset(type).x/2, p4_pr, 0];
+module xy_carriage_slice_mask(type)
+{
+    corexy_type = corexy_type(type);
+    p1_pr = pulley_pr(coreXYR_return_bottom_idler(corexy_type));
+    p0_pr = pulley_pr(coreXYR_gantory_bottom_idler(corexy_type));
+    p4_pr = pulley_pr(coreXYR_gantory_top_idler(corexy_type));
+    p0 = [p1_pr*2 + p0_pr + belt_offsets(type).x/2, -p0_pr, 0];
+    p4 = [p4_pr + belt_offsets(type).x/2, p4_pr, 0];
 
     groove_width = 5;
     chamfer = 5;
     gantory_height = gantory_height(type);
-    gantory_front  = rail_carriage_height(type).x + belt_back_thickness(type);
+    gantory_front  = carriage_total_heights(type).x + belt_back_thickness(type);
 
     pfit1  = [groove_width+chamfer+5, gantory_front+gantory_height+chamfer/2, 0];
     pfit2  = pfit1 + [12, 0, 0];
-    pfit3  = [groove_width+3, -(-y_carriage_offset + carriage_pitch_x(rail_carriage(type).y)/2), 0];
-    pfit4  = [rail_carriage_height(type).y+11, gantory_front/2 + groove_width/4, 0];
+    pfit3  = [groove_width+3, -(-y_carriage_offset(type) + carriage_pitch_x(carriage_types(type).y)/2), 0];
+    pfit4  = [carriage_total_heights(type).y+11, gantory_front/2 + groove_width/4, 0];
     pfit = [pfit1, pfit2, pfit3, pfit4];
 
     difference() {
@@ -74,37 +84,40 @@ module xy_carriage_slice_mask(type, additional_idler_type, y_carriage_offset) {
         cylinder(r=2.5/2, h=5, center=true);
 }
 
-module xy_carriage_base(type, size, pos, reverse, additional_idler_type, y_carriage_offset)
+module xy_carriage_base(type, size, pos)
 {
+    corexy_type = corexy_type(type);
     base_thickness = 10;
     r = 16 / 2;
     chamfer = 5;
     groove_width = 5;
 
     gantory_height = gantory_height(type);
-    gantory_front  = rail_carriage_height(type).x + belt_back_thickness(type);
+    gantory_front  = carriage_total_heights(type).x + belt_back_thickness(type);
     height = gantory_height + base_thickness*2;
 
-    p1_pr = pulley_pr(idler_type_y_bottom(additional_idler_type));
-    p0_pr = pulley_pr(idler_type_xy_toothed(additional_idler_type));
-    p0_bore = pulley_bore(idler_type_xy_toothed(additional_idler_type));
-    p0_extent = pulley_extent(idler_type_xy_toothed(additional_idler_type));
-    p0_height = pulley_height(idler_type_xy_toothed(additional_idler_type));
-    p4_pr = pulley_pr(idler_type_xy_plain(additional_idler_type));
-    p4_bore = pulley_bore(idler_type_xy_plain(additional_idler_type));
-    p4_extent = pulley_extent(idler_type_xy_plain(additional_idler_type));
-    p4_height = pulley_height(idler_type_xy_plain(additional_idler_type));
-    p0 = [p1_pr*2 + p0_pr + belt_offset(type).x/2, -p0_pr, 0];
-    p4 = [p4_pr + belt_offset(type).x/2, p4_pr, 0];
+    p1_pr = pulley_pr(coreXYR_return_bottom_idler(corexy_type));
+    p0_type = coreXYR_gantory_bottom_idler(corexy_type);
+    p0_pr = pulley_pr(p0_type);
+    p0_bore = pulley_bore(p0_type);
+    p0_extent = pulley_extent(p0_type);
+    p0_height = pulley_height(p0_type);
+    p4_type = coreXYR_gantory_top_idler(corexy_type);
+    p4_pr = pulley_pr(p4_type);
+    p4_bore = pulley_bore(p4_type);
+    p4_extent = pulley_extent(p4_type);
+    p4_height = pulley_height(p4_type);
+    p0 = [p1_pr*2 + p0_pr + belt_offsets(type).x/2, -p0_pr, 0];
+    p4 = [p4_pr + belt_offsets(type).x/2, p4_pr, 0];
 
-    pscrew1 = [(size.x-gantory(type)[2][0])/2-rail_carriage_height(type).y, gantory_front + gantory_height/2, 0, 3];
+    pscrew1 = [(size.x-gantory(type)[2][0])/2-carriage_total_heights(type).y, gantory_front + gantory_height/2, 0, 3];
     pscrew2 = pscrew1 + [(gantory(type)[2][0] - gantory(type)[2][1])/2, 0, 0, 0];
-    pscrew3 = [rail_carriage_height(type).y+5, gantory_front/2+groove_width/4, 0, 5];
+    pscrew3 = [carriage_total_heights(type).y+5, gantory_front/2+groove_width/4, 0, 5];
 
     pfit1  = [groove_width+chamfer+5, gantory_front+gantory_height+chamfer/2, 0];
     pfit2  = pfit1 + [12, 0, 0];
-    pfit3  = [groove_width+3, -(-y_carriage_offset + carriage_pitch_x(rail_carriage(type).y)/2), 0];
-    pfit4  = [rail_carriage_height(type).y+11, gantory_front/2 + groove_width/4, 0];
+    pfit3  = [groove_width+3, -(-y_carriage_offset(type) + carriage_pitch_x(carriage_types(type).y)/2), 0];
+    pfit4  = [carriage_total_heights(type).y+11, gantory_front/2 + groove_width/4, 0];
     pfit = [pfit1, pfit2, pfit3, pfit4];
 
     difference() {
@@ -123,14 +136,14 @@ module xy_carriage_base(type, size, pos, reverse, additional_idler_type, y_carri
     module xy_carriage_body() {
         hull() {
             // gantory support
-            box = [gantory_height*1.5, gantory_height + rail_carriage_height(type).x + belt_back_thickness(type), height];
+            box = [gantory_height*1.5, gantory_height + carriage_total_heights(type).x + belt_back_thickness(type), height];
             translate([(size.x - gantory_length(type))/2, box.y/2, 0])
                 cuboid([box.x+chamfer*2, box.y+chamfer*2, box.z], chamfer=chamfer);
 
             // carriage support
             difference() {
-                translate([base_thickness/2, y_carriage_offset, 0])
-                    cuboid([base_thickness, carriage_block_length(rail_carriage(type).y)+chamfer*2, height], chamfer=chamfer);
+                translate([base_thickness/2, y_carriage_offset(type), 0])
+                    cuboid([base_thickness, carriage_block_length(carriage_types(type).y)+chamfer*2, height], chamfer=chamfer);
                 translate([50, -5-r-p0_pr, 0])
                     cube([100, 10, height+2], center=true);
             }
@@ -150,19 +163,19 @@ module xy_carriage_base(type, size, pos, reverse, additional_idler_type, y_carri
                 for (p=[
                     [p0, p0_extent, p0_height, -1], 
                     [p4, p4_extent, p4_height, 1]
-                ]) translate(p[0] + [0, 0, p[3]*belt_offset(type).z/2])
+                ]) translate(p[0] + [0, 0, p[3]*belt_offsets(type).z/2])
                     cylinder(r=p[1]+2, h=p[2]+1, center=true);
 
                 // p0 support
-                translate(p0 + [l/2, 0, -belt_offset(type).z/2]) 
+                translate(p0 + [l/2, 0, -belt_offsets(type).z/2]) 
                     cube([l, p0_pr*2, p0_height+1], center=true);
 
                 // belt: head-p0, p0-p1, p4-head
                 for (p=[
-                    [p1_pr*2+p0_pr+l/2, 0,           -belt_offset(type).z/2], 
-                    [p1_pr*2,          -(p0_pr+l/2), -belt_offset(type).z/2], 
-                    [p4_pr+l/2,         0,            belt_offset(type).z/2]
-                ]) translate(p + [belt_offset(type).x/2, 0, 0])
+                    [p1_pr*2+p0_pr+l/2, 0,           -belt_offsets(type).z/2], 
+                    [p1_pr*2,          -(p0_pr+l/2), -belt_offsets(type).z/2], 
+                    [p4_pr+l/2,         0,            belt_offsets(type).z/2]
+                ]) translate(p + [belt_offsets(type).x/2, 0, 0])
                     cuboid([p[1] ? groove_width : l, p[1] ? l : groove_width, p0_height+1], chamfer=1, edges=[p[2]>0?TOP:BOT]);
             }
 
@@ -170,8 +183,8 @@ module xy_carriage_base(type, size, pos, reverse, additional_idler_type, y_carri
             for (p=[
                 [p0, p0_bore, p0_height, -1], 
                 [p4, p4_bore, p4_height, 1]
-            ]) translate(p[0] + [0, 0, p[3]*belt_offset(type).z/2])
-                for (i=[0, 1]) rotate([i*180, 0, 0]) translate([0, 0, belt_offset(type).z/2])
+            ]) translate(p[0] + [0, 0, p[3]*belt_offsets(type).z/2])
+                for (i=[0, 1]) rotate([i*180, 0, 0]) translate([0, 0, belt_offsets(type).z/2])
                     cylinder(r1=(p[1]+1)/2, r2=(p[1]+2)/2, h=1, center=true);
         }
 
@@ -203,8 +216,8 @@ module xy_carriage_base(type, size, pos, reverse, additional_idler_type, y_carri
             }
         }
 
-        carriage  = rail_carriage(type).y;
-        translate([0, y_carriage_offset, 0]) rotate([0, 90, 0])
+        carriage  = carriage_types(type).y;
+        translate([0, y_carriage_offset(type), 0]) rotate([0, 90, 0])
             for (p=square([carriage_pitch_x(carriage), carriage_pitch_y(carriage)], center=true)) move(p) {
                 translate([0, 0,-1]) cylinder(r=3/2, h=9+2);
                 if (p.y>0) {
@@ -245,15 +258,15 @@ module xy_carriage_base(type, size, pos, reverse, additional_idler_type, y_carri
 
     module xy_carriage_hole_gantory() {
         translate([
-            (size.x - gantory_length(type))/2 - rail_carriage_height(type).y, 
-            rail_carriage_height(type).x + belt_back_thickness(type)
+            (size.x - gantory_length(type))/2 - carriage_total_heights(type).y, 
+            carriage_total_heights(type).x + belt_back_thickness(type)
         ]) {
             len = 100;
             gap = 0.1;
             hg = gantory_height(type);
             wg = gantory_height(type);
-            hr = rail_width(rail_type(type).x);
-            wr = rail_height(rail_type(type).x);
+            hr = rail_width(rail_types(type).x);
+            wr = rail_height(rail_types(type).x);
             for (p = [
                 [len+2 , wg, hg,  1],   // gantory
                 [len-40, wr, hr, -1]    // rail
@@ -267,7 +280,7 @@ module xy_carriage_base(type, size, pos, reverse, additional_idler_type, y_carri
     module xy_carriage_hole_y_carriage() {
         gap=0.1;
         translate([-10, 0, 0])
-            cuboid([20, 100, carriage_width(rail_carriage(type).y)+gap*2], chamfer=sqrt(2)/2);
+            cuboid([20, 100, carriage_width(carriage_types(type).y)+gap*2], chamfer=sqrt(2)/2);
     }
 
     module xy_carriage_hole_fitting() {
@@ -283,15 +296,15 @@ module xy_carriage_base(type, size, pos, reverse, additional_idler_type, y_carri
 
     module xy_carriage_hole_tooth_text() {
         size=3;
-        translate(p0 + [0,0, -belt_offset(type).z/2]) rotate([0, 90, 0])
+        translate(p0 + [0,0, -belt_offsets(type).z/2]) rotate([0, 90, 0])
             for (i=[-90, 90]) rotate([0, i, 0]) translate([p0_bore/2+0.5, -size/2, -(p0_height+1)/2-0.5])
                 linear_extrude(1)
-                    text(str(pulley_teeth(idler_type_xy_toothed(additional_idler_type))), size=size);
+                    text(str(pulley_teeth(p0_type)), size=size);
     }
 
     module xy_carriage_hole_gantory_text() {
         size=3;
-        gantory_back = rail_carriage_height(type).x + gantory_height(type) + belt_back_thickness(type);
+        gantory_back = carriage_total_heights(type).x + gantory_height(type) + belt_back_thickness(type);
         translate([20, gantory_back-size-1]) rotate([0, 90, 0])
             for (i=[-90, 90]) rotate([0, i, 0]) translate([-5.5, 0, -gantory_height(type)/2-0.5])
                 linear_extrude(1)
@@ -300,7 +313,7 @@ module xy_carriage_base(type, size, pos, reverse, additional_idler_type, y_carri
 
     module xy_carriage_hole_version_text() {
         size=3;
-        gantory_back = rail_carriage_height(type).x + gantory_height(type) + belt_back_thickness(type);
+        gantory_back = carriage_total_heights(type).x + gantory_height(type) + belt_back_thickness(type);
         translate([31, gantory_back-size-1]) rotate([0, 90, 0])
             for (i=[-90, 90]) rotate([0, i, 0]) translate([-2, 0, -gantory_height(type)/2-0.5])
                 linear_extrude(1)
