@@ -39,8 +39,8 @@ coreXY_2GT_mixed_idler = list_set(list_set(
     MOTOR_POSITION,
     [
         [  0, -(pulley_pr(GT2x20_plain_idler)+pulley_pr(GT2x20ob_pulley)*2+pulley_pr(GT2x20_plain_idler))],
-        [ 42, -(pulley_pr(GT2x20_plain_idler)+pulley_pr(GT2x20ob_pulley))],
-        [-42, -(pulley_pr(GT2x20_plain_idler)+pulley_pr(GT2x20ob_pulley))]
+        [ 36, -(pulley_pr(GT2x20_plain_idler)+pulley_pr(GT2x20ob_pulley)+6)],
+        [-36, -(pulley_pr(GT2x20_plain_idler)+pulley_pr(GT2x20ob_pulley)+6)]
     ]
 );
 
