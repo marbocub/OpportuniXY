@@ -24,7 +24,7 @@ module ABMotorMountReversedLeft(type, reverse)
 
     module motor()
     {
-        position = ab_motor_pulley_position(type, reverse, -1);
+        position = ab_motor_pulley_position(type, reverse, LEFT);
         zoff = [0, 0, -extrusion_height(motor_extrusion_types(type).x)];
         p2d = position[P2D];
 
@@ -41,7 +41,7 @@ module ABMotorMountReversedRight(type, reverse)
 
     module motor()
     {
-        position = ab_motor_pulley_position(type, reverse, 1);
+        position = ab_motor_pulley_position(type, reverse, RIGHT);
         zoff = [0, 0, -extrusion_height(motor_extrusion_types(type).x)];
         p2d = position[P2D];
 
@@ -62,6 +62,8 @@ function ab_motor_pulley_position(type, reverse=false, direction = -1) =
         p3 + [ioff.x, 0, 0],    // p2t
         p3                      // p3
     ];
+LEFT = -1;
+RIGHT = 1;
 P2B = 0;
 P2D = 1;
 P2T = 2;
