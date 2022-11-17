@@ -15,6 +15,7 @@ include <utils/CoreXYReversedSpecial.scad>
 
 use <XYCarriage.scad>
 use <ABMotorMountReversed.scad>
+use <ABIdlerMount.scad>
 
 // custom pulleys
 GT2x22_toothed_idler = ["GT2x22_toothed_idler", "GT2",22, 13.50, GT2x6, 6.5, 18.00, 0, 5, 18.00, 1.0, 0, 0, false, 0];
@@ -117,6 +118,10 @@ module AxisXY(type=X5SA_330_Rail, size=[490,460,530], pos=[0,0,0], reverse=false
     YRails(type, size=size);
     CoreXY(type, size=size, pos=pos, reverse=reverse);
     if (reverse) {
+        color("DarkKhaki") {
+            translate([-size.x/2, -size.y/2]) ABIdlerMountWithTensionerLeft(type, reverse=reverse);
+            translate([ size.x/2, -size.y/2]) ABIdlerMountWithTensionerRight(type, reverse=reverse);
+        }
         translate([-size.x/2,  size.y/2]) ABMotorMountReversedLeft(type, reverse=reverse);
         translate([ size.x/2,  size.y/2]) ABMotorMountReversedRight(type, reverse=reverse);
     } else {
