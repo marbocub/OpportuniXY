@@ -18,39 +18,33 @@ version = 3;
 
 function y_carriage_offset(type) = carriage_total_heights(type).x+1.5 - carriage_pitch_x(carriage_types(type).y)/2;
 
-module xy_carriage_left(type, size, pos)
+module XYCarriage(type, size)
 {
-    xy_carriage_base(type, size=size, pos=pos);
-    //xy_carriage_lower(type=type, size=size, pos=pos);
-    //xy_carriage_upper(type=type, size=size, pos=pos);
+    xy_carriage_base(type, size=size);
+    //xy_carriage_lower(type=type, size=size);
+    //xy_carriage_upper(type=type, size=size);
 }
 
-module xy_carriage_right(type, size, pos)
-{
-    rotate([0, 180, 0])
-        xy_carriage_base(type, size=size, pos=pos);
-}
-
-module xy_carriage(type, size, pos)
+module XYCarriageRender(type, size)
 {
     translate([-10, 0, 35/2]) rotate([0,180,0])
-        xy_carriage_upper(type=type, size=size, pos=pos);
+        xy_carriage_upper(type=type, size=size);
     translate([ 10, 0, 35/2])
-        xy_carriage_lower(type=type, size=size, pos=pos);
+        xy_carriage_lower(type=type, size=size);
 }
 
-module xy_carriage_upper(type, size, pos)
+module xy_carriage_upper(type, size)
 {
     intersection() {
-        xy_carriage_base(type, size=size, pos=pos);
+        xy_carriage_base(type, size=size);
         xy_carriage_slice_mask(type);
     }
 }
 
-module xy_carriage_lower(type, size, pos)
+module xy_carriage_lower(type, size)
 {
     difference() {
-        xy_carriage_base(type, size=size, pos=pos);
+        xy_carriage_base(type, size=size);
         xy_carriage_slice_mask(type);
     }
 }
@@ -84,7 +78,7 @@ module xy_carriage_slice_mask(type)
         cylinder(r=2.5/2, h=5, center=true);
 }
 
-module xy_carriage_base(type, size, pos)
+module xy_carriage_base(type, size)
 {
     corexy_type = corexy_type(type);
     base_thickness = 10;

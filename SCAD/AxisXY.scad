@@ -32,9 +32,9 @@ coreXY_2GT_mixed_idler = list_set(list_set(
         GT2x20_toothed_idler,   // gantory bottom
         F684_plain_idler,       // gantory top
         GT2x20_plain_idler,     // return bottom
-        GT2x20_plain_idler,       // return top
-        GT2x20_plain_idler,       // motor bottom
-        GT2x20_plain_idler        // motor top
+        GT2x20_plain_idler,     // return top
+        GT2x20_plain_idler,     // motor bottom
+        GT2x20_plain_idler      // motor top
     ]),
     MOTOR_POSITION,
     [
@@ -121,32 +121,33 @@ module AxisXY(type=X5SA_330_Rail, size=[490,460,530], pos=[0,0,0], reverse=false
 
     // moving
     translate([0, pos.y, 0]) {
-        XGantory(type, size=size, pos=pos, reverse=reverse);
-        translate([-(size.x/2 - carriage_total_heights(type).y), 0, 0]) rotate([reverse?0:180, 0, 0]) color("DarkKhaki")
-            xy_carriage_left(type, size=size, pos=pos);
-        translate([ (size.x/2 - carriage_total_heights(type).y), 0, 0]) rotate([reverse?0:180, 0, 0]) color("DarkKhaki")
-            xy_carriage_right(type, size=size, pos=pos);
+        rotate([reverse ? 90 : -90, 0, 0]) XGantory(type, size=size, pos=pos);
+        color("DarkKhaki") {
+            translate([-(size.x/2 - carriage_total_heights(type).y), 0, 0]) rotate([reverse?0:180, 0, 0]) {
+                XYCarriage(type, size=size);
+            }
+            translate([ (size.x/2 - carriage_total_heights(type).y), 0, 0]) rotate([reverse?0:180, 180, 0])
+                XYCarriage(type, size=size);
+        }
     }
 }
 
-module XGantory(type, size=[490,460,530], pos=[0,0,0], reverse=true)
+module XGantory(type, size=[490,460,530], pos=[0,0,0])
 {
-    rotate([reverse ? 90 : -90, 0, 0]) {
-        // x
-        translate([0, 0, -(carriage_total_heights(type).y + belt_back_thickness(type))]) {
-            translate([0, 0, -(gantory_height(type) / 2)])
-                rotate([0, 90, 0])
-                    extrusion(gantory_extrusion(type), gantory_length(type));
-            rail(rail_types(type).x, rail_lengths(type).x);
-            translate([pos.x, 0, 0]) carriage(carriage_types(type).x);
-        }
-        // y
-        translate([0, 0, -y_carriage_offset(type)]) for(i=[-1, 1]) rotate([0, 90*i, 0]) translate([0, 0, -(size.x/2)]) {
-            carriage(carriage_types(type).y);
-            carriage  = carriage_types(type).y;
-            translate([0, 0, 19]) for (p=square([carriage_pitch_x(carriage), carriage_pitch_y(carriage)], center=true)) translate(p)
-                screw(M3_dome_screw, 10);
-        }
+    // x
+    translate([0, 0, -(carriage_total_heights(type).y + belt_back_thickness(type))]) {
+        translate([0, 0, -(gantory_height(type) / 2)])
+            rotate([0, 90, 0])
+                extrusion(gantory_extrusion(type), gantory_length(type));
+        rail(rail_types(type).x, rail_lengths(type).x);
+        translate([pos.x, 0, 0]) carriage(carriage_types(type).x);
+    }
+    // y
+    translate([0, 0, -y_carriage_offset(type)]) for(i=[-1, 1]) rotate([0, 90*i, 0]) translate([0, 0, -(size.x/2)]) {
+        carriage(carriage_types(type).y);
+        carriage  = carriage_types(type).y;
+        translate([0, 0, 19]) for (p=square([carriage_pitch_x(carriage), carriage_pitch_y(carriage)], center=true)) translate(p)
+            screw(M3_dome_screw, 10);
     }
 }
 
