@@ -283,7 +283,12 @@ module coreXYR_belts(
 {
     assert(coreXYPosBL.z == coreXYPosTR.z);
 
-    coreXYSize = coreXYPosTR - coreXYPosBL;
+    right = coreXYPosTR.x + pulley_pr(coreXYR_return_top_idler(type)) - pulley_pr(coreXYR_return_bottom_idler(type));
+    coreXYSize = [
+        right - coreXYPosBL.x,
+        coreXYPosTR.y - coreXYPosBL.y,
+        0
+    ];
     translate(coreXYPosBL)
         coreXYR(
             type, 
