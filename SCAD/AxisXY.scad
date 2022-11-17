@@ -51,8 +51,7 @@ coreXY_2GT_mixed_idler = list_set(list_set(
  * [2]: belt path offset both side [x,y,z]
  * [3]: gantory [length, extrusion, [screws]]
  * [4]: corexy type
- * [5]: AB motor [motortype, xframetype, yframetype]
- * [6]: AB idler [xframetype, yframetype]
+ * [5]: AB motor [motortype, frametype]
  */
 X5SA_330_Rail = [
     [400, 400, 500], 
@@ -60,8 +59,7 @@ X5SA_330_Rail = [
     [4, 10, 9.5],
     [450, E2020, [431.2, 418.4]],
     coreXY_2GT_mixed_idler,
-    [E2020, E2020, NEMA17_34],
-    [E2020, E2020]
+    [NEMA17_34, E2020]
 ];
 
 function rail_lengths(type) = type[0];
@@ -109,9 +107,8 @@ function idler_offset_top_right(type, reverse=false) =
     ];
 function belt_type(type) = coreXY_belt(corexy_type(type));
 function belt_back_thickness(type) = belt_thickness(belt_type(type)) - belt_tooth_height(belt_type(type));
-function motor_type(type) = type[5][2];
-function motor_extrusion_types(type) = [type[5][0], type[5][1]];
-function idler_extrusion_types(type) = [type[6][0], type[6][1]];
+function motor_type(type) = type[5][0];
+function motor_frame_height(type) = extrusion_height(type[5][1]);
 
 
 module AxisXY(type=X5SA_330_Rail, size=[490,460,530], pos=[0,0,0], reverse=false)
