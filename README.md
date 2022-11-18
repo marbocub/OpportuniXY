@@ -6,6 +6,23 @@ It is work in progress.
 
 ![Image1](Images/image-001.png)
 
+## Requirements
+
+The SCAD code is worked on OpenSCAD with NopSCADlib and BOSL2 libraries.
+
+## Printed parts
+
+The following parts are available:
+
+* XY carriage
+* AB idler mount
+
+Other parts are work in progress.
+
+### Print settings
+
+Voron's standard print settings are recommended.
+
 ## Authors
 
 marbocub - Initial work
