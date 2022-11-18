@@ -46,8 +46,14 @@ module RenderingAssembly()
     //$fs=0.01;
     //$fn=180;
 
+    /*
     XYCarriageRender (
         type=X5SA_330_Rail,
         size=frame_inner(X5SA_330)
+    );
+    */
+    ABIdlerMountRender(
+        type=X5SA_330_Rail,
+        reverse=reverse
     );
 }

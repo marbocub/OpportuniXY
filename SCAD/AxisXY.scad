@@ -121,8 +121,8 @@ module AxisXY(type=X5SA_330_Rail, size=[490,460,530], pos=[0,0,0], reverse=false
     CoreXY(type, size=size, pos=pos, reverse=reverse);
     if (reverse) {
         color("DarkKhaki") {
-            translate([-size.x/2, -size.y/2]) ABIdlerMountWithTensionerLeft(type, reverse=reverse);
-            translate([ size.x/2, -size.y/2]) ABIdlerMountWithTensionerRight(type, reverse=reverse);
+            translate([-size.x/2, -size.y/2]) ABIdlerMountLeft(type, reverse=reverse);
+            translate([ size.x/2, -size.y/2]) ABIdlerMountRight(type, reverse=reverse);
         }
         translate([-size.x/2,  size.y/2]) ABMotorMountReversedLeft(type, reverse=reverse);
         translate([ size.x/2,  size.y/2]) ABMotorMountReversedRight(type, reverse=reverse);
