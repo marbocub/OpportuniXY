@@ -25,7 +25,7 @@ Voron's standard print settings are recommended.
 
 ## The concepts
 
-The OpportuniXY-330 aims at high precision 3D printing at a low cost.
+The OpportuniXY-330 aims at high precision 3D printing at a low cost and is not targeted at the high speed 3D printer.
 
 ### Side mounted linear rails
 
