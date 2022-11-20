@@ -26,6 +26,10 @@ F684_plain_idler     = ["F684_plain_idler",     "GT2", 0,  9.00, GT2x6, 6.5, 10.
 X5SA_toothed_idler   = ["X5SA_toothed_idler",   "GT2", 0, 15.65, GT2x6, 6.0, 17.15, 0, 5, 17.15, 2.0, 0, 0, false, 0];
 X5SA_plain_idler     = ["X5SA_plain_idler",     "GT2", 0, 14.15, GT2x6, 6.0, 17.15, 0, 5, 17.15, 2.0, 0, 0, false, 0];
 
+// custom motor position
+MotorAngle = 6;
+MotorOffset = 36;
+
 // custom coreXY
 coreXY_2GT_mixed_idler = list_set(list_set(
     coreXY_2GT_20_20,
@@ -40,9 +44,9 @@ coreXY_2GT_mixed_idler = list_set(list_set(
     ]),
     MOTOR_POSITION,
     [
-        [  0, -(pulley_pr(GT2x20x5_plain_idler)+pulley_pr(GT2x20ob_pulley)*2+pulley_pr(GT2x20x5_plain_idler))],
-        [ 36, -(pulley_pr(GT2x20x5_plain_idler)+pulley_pr(GT2x20ob_pulley)+6)],
-        [-36, -(pulley_pr(GT2x20x5_plain_idler)+pulley_pr(GT2x20ob_pulley)+6)]
+        [ 0, -(pulley_pr(GT2x20x5_plain_idler)+pulley_pr(GT2x20ob_pulley)*2+pulley_pr(GT2x20x5_plain_idler))],
+        [ MotorOffset*cos(MotorAngle), -(pulley_pr(GT2x20x5_plain_idler)+pulley_pr(GT2x20ob_pulley)+MotorOffset*sin(MotorAngle))],
+        [-MotorOffset*cos(MotorAngle), -(pulley_pr(GT2x20x5_plain_idler)+pulley_pr(GT2x20ob_pulley)+MotorOffset*sin(MotorAngle))]
     ]
 );
 
@@ -52,7 +56,7 @@ coreXY_2GT_mixed_idler = list_set(list_set(
  * [2]: belt path offset both side [x,y,z]
  * [3]: gantory [length, extrusion, [screws]]
  * [4]: corexy type
- * [5]: AB motor [motortype, frametype]
+ * [5]: AB motor [motortype, motorangle, motoroffset, frametype]
  */
 X5SA_330_Rail = [
     [400, 400, 500], 
@@ -60,7 +64,7 @@ X5SA_330_Rail = [
     [4, 10, 9.5],
     [450, E2020, [431.2, 418.4]],
     coreXY_2GT_mixed_idler,
-    [NEMA17_34, E2020]
+    [NEMA17_34, MotorAngle, MotorOffset, E2020]
 ];
 
 function rail_lengths(type) = type[0];
@@ -109,7 +113,9 @@ function idler_offset_top_right(type, reverse=false) =
 function belt_type(type) = coreXY_belt(corexy_type(type));
 function belt_back_thickness(type) = belt_thickness(belt_type(type)) - belt_tooth_height(belt_type(type));
 function motor_type(type) = type[5][0];
-function motor_frame_height(type) = extrusion_height(type[5][1]);
+function motor_angle(type) = type[5][1];
+function motor_offset(type) = type[5][2];
+function motor_frame_height(type) = extrusion_height(type[5][3]);
 
 
 module AxisXY(type=X5SA_330_Rail, size=[490,460,530], pos=[0,0,0], reverse=false)
