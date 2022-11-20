@@ -23,6 +23,12 @@ include <NopSCADlib/utils/core/core.scad>
 include <NopSCADlib/utils/core_xy.scad>
 
 /*
+ * default idlers
+ */
+GT2x20x5_toothed_idler=["GT2x20x5_toothed_idler","GT2",20,12.22, GT2x6, 6.5, 18.00, 0, 5, 18.00, 1.0, 0, 0, false, 0];
+GT2x20x5_plain_idler = ["GT2x20x5_plain_idler", "GT2", 0, 12.00, GT2x6, 6.5, 18.00, 0, 5, 18.00, 1.0, 0, 0, false, 0];
+
+/*
  * [0]: description
  * [1]: belt type
  * [2]: drive plley type
@@ -48,24 +54,24 @@ coreXY_2GT_20_20 = [
     "coreXY_20_20",
     GT2x6,
     GT2x20ob_pulley,
-    GT2x20_toothed_idler,
-    GT2x20_plain_idler,
+    GT2x20x5_toothed_idler,
+    GT2x20x5_plain_idler,
     "LightSteelBlue",
     "SteelBlue",
     "DarkSeaGreen",
     "SeaGreen",
     [
-        [  0, -(pulley_pr(GT2x20_plain_idler)+pulley_pr(GT2x20ob_pulley))*2],
-        [ 42, -(pulley_pr(GT2x20_plain_idler)+pulley_pr(GT2x20ob_pulley))],
-        [-42, -(pulley_pr(GT2x20_plain_idler)+pulley_pr(GT2x20ob_pulley))]
+        [  0, -(pulley_pr(GT2x20x5_plain_idler)+pulley_pr(GT2x20ob_pulley))*2],
+        [ 42, -(pulley_pr(GT2x20x5_plain_idler)+pulley_pr(GT2x20ob_pulley))],
+        [-42, -(pulley_pr(GT2x20x5_plain_idler)+pulley_pr(GT2x20ob_pulley))]
     ],
     [
-        GT2x20_toothed_idler,
-        GT2x20_plain_idler,
-        GT2x20_plain_idler,
-        GT2x20_plain_idler,
-        GT2x20_plain_idler,
-        GT2x20_plain_idler
+        GT2x20x5_toothed_idler,
+        GT2x20x5_plain_idler,
+        GT2x20x5_plain_idler,
+        GT2x20x5_plain_idler,
+        GT2x20x5_plain_idler,
+        GT2x20x5_plain_idler
     ]
 ];
 

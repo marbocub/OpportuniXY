@@ -19,8 +19,6 @@ use <ABIdlerMount.scad>
 
 // custom pulleys
 GT2x22_toothed_idler = ["GT2x22_toothed_idler", "GT2",22, 13.50, GT2x6, 6.5, 18.00, 0, 5, 18.00, 1.0, 0, 0, false, 0];
-GT2x20x5_toothed_idler=["GT2x20x5_toothed_idler","GT2",20,12.22, GT2x6, 6.5, 18.00, 0, 5, 18.00, 1.0, 0, 0, false, 0];
-GT2x20x5_plain_idler = ["GT2x20x5_plain_idler", "GT2", 0, 12.00, GT2x6, 6.5, 18.00, 0, 5, 18.00, 1.0, 0, 0, false, 0];
 F695_toothed_idler   = ["F695_toothed_idler",   "GT2", 0, 14.50, GT2x6, 6.5, 15.00, 0, 5, 15.00, 1.0, 0, 0, false, 0];
 F695_plain_idler     = ["F695_plain_idler",     "GT2", 0, 13.00, GT2x6, 6.5, 15.00, 0, 5, 15.00, 1.0, 0, 0, false, 0];
 F684_toothed_idler   = ["F684_toothed_idler",   "GT2", 0, 10.50, GT2x6, 6.5, 10.30, 0, 4, 10.30, 1.0, 0, 0, false, 0];
