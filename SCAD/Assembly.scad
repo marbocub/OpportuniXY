@@ -12,6 +12,8 @@ include <Frame.scad>
 include <AxisXY.scad>
 include <AxisZ.scad>
 
+include <Config.scad>
+
 reverse = true;
 
 module PreviewAssembly(pos=[0, 0, 0])
@@ -21,19 +23,19 @@ module PreviewAssembly(pos=[0, 0, 0])
     pos = pos + [0, reverse ? -20 : 0, 0];
 
     if (all) {
-        Frame(X5SA_330);
-        translate([0, 0, gantory_level(X5SA_330)])
+        Frame(FrameType);
+        translate([0, 0, gantory_level(FrameType)])
             AxisXY(
-                type=X5SA_330_Rail,
-                size=frame_inner(X5SA_330),
+                type=RailType,
+                size=frame_inner(FrameType),
                 pos=pos,
                 reverse=reverse
             );
-        translate([0, 0, frame_outer(X5SA_330).z/2])
+        translate([0, 0, frame_outer(FrameType).z/2])
             AxisZ(
-                rail_type=X5SA_330_Rail,
-                table_type=X5SA_330_Table,
-                size=frame_inner(X5SA_330),
+                rail_type=RailType,
+                table_type=TableType,
+                size=frame_inner(FrameType),
                 pos=[0, -30, -30-pos.z]
             );
     } else {
@@ -48,12 +50,12 @@ module RenderingAssembly()
 
     /*
     XYCarriageRender (
-        type=X5SA_330_Rail,
-        size=frame_inner(X5SA_330)
+        type=RailType,
+        size=frame_inner(FrameType)
     );
     */
     ABIdlerMountRender(
-        type=X5SA_330_Rail,
+        type=RailType,
         reverse=reverse
     );
 }

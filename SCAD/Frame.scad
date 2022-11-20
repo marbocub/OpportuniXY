@@ -15,7 +15,7 @@ include <NopSCADlib/lib.scad>
  * [0]: extrusion length [x,y,z,z2]
  * [1]: extrusion type   [x,y,z,z2]
  */
-X5SA_330 = [
+X5SA_330_Frame = [
     [530, 460, 530, 530],
     [E2020, E2020, E2040, E2020]
 ];
@@ -34,7 +34,7 @@ function frame_inner(type) = [
     frame_dimension(type).z
 ];
 
-module Frame(frame_type = X5SA_330)
+module Frame(frame_type = X5SA_330_Frame)
 {
     dimension = frame_dimension(frame_type);
     x = dimension.x;
