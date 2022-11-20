@@ -36,7 +36,7 @@ module PreviewAssembly(pos=[0, 0, 0])
                 rail_type=RailType,
                 table_type=TableType,
                 size=frame_inner(FrameType),
-                pos=[0, -30, -30-pos.z]
+                pos=[0, -45, -30-pos.z]
             );
     } else {
         RenderingAssembly();
