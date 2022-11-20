@@ -25,11 +25,11 @@ Voron's standard print settings are recommended.
 
 ## The concepts
 
-The OpportuniXY-330 aims at high precision 3D printing at a low cost and is not targeted at the high speed 3D printer.
+The OpportuniXY-330 aims at high precision 3D printing at a low cost.
 
 ### Side mounted linear rails
 
-If the steel linear rails are mounted on top of the aluminum gantry on X or Y axis, the nozzle is moving down in printing. Otherwise, if these linear rails are mounted under the gantry, the nozzle is moving up in printing. It is the bi-metal issue with the differences of the coefficient of thermal expansion between aluminum and steel. This issue is especially noticeable when low speed high precision printing.
+If the steel linear rails are mounted on top of the aluminum gantry on X or Y axis, the nozzle is moving down in printing. Otherside, if these linear rails are mounted under the gantry, the nozzle is moving up in printing. It is the bi-metal issue with the differences of the coefficient of thermal expansion between aluminum and steel. This issue is especially noticeable when low speed high precision printing.
 
 The OpportuniXY-330 chose a practical solution: the linear rails are side mounted to solve it.
 
