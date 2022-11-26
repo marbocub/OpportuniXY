@@ -88,10 +88,10 @@ module ab_idler_spacer(type)
     difference() {
         union() {
             translate([0, 0, (h+1)/2]) cylinder(r=er+1.5-gap, h=h+1, center=true);
-            translate([0, 0, h+1]) cylinder(d1=id+2, d2=id+1, h=1, center=true);
+            translate([0, 0,  h+1])    cylinder(d1=id+2, d2=id+1, h=1, center=true);
         }
-        translate([0, 0, (h+2)/2]) cylinder(d=id,       h=h+2, center=true);
-        translate([0, 0, 1/2+gap*2])     cylinder(d1=id+2, d2=id, h=2, center=true);
+        translate([0, 0, (h+2)/2])     cylinder(d=id, h=h+2, center=true);
+        translate([0, 0, 1/2+gap*4])   cylinder(d1=id+2, d2=id, h=2, center=true);
     }
 }
 
