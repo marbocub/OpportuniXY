@@ -61,7 +61,7 @@ coreXY_2GT_mixed_idler = list_set(list_set(
 X5SA_330_Rail = [
     [400, 400, 500], 
     [MGN12H_carriage, MGN12H_carriage, MGN12H_carriage], 
-    [4, 10, 9.5],
+    [4, 7.6, 9.5],
     [450, E2020, [431.2, 418.4]],
     coreXY_2GT_mixed_idler,
     [NEMA17_34, MotorAngle, MotorOffset, E2020]

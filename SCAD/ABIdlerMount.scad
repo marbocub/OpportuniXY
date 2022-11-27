@@ -87,7 +87,7 @@ module ab_idler_spacer(type)
 
     difference() {
         union() {
-            translate([0, 0, (h+1)/2]) cylinder(r=er+1.5-gap, h=h+1, center=true);
+            translate([0, 0, (h+1)/2]) cylinder(r=er+0.75-gap*2, h=h+1, center=true);
             translate([0, 0,  h+1])    cylinder(d1=id+2, d2=id+1, h=1, center=true);
         }
         translate([0, 0, (h+2)/2])     cylinder(d=id, h=h+2, center=true);
@@ -238,7 +238,7 @@ module ab_idler_mount_body(type, reverse, side)
                 union() {
                     l = p1_er+4;
                     w = 4;
-                    cylinder(r=p1_er+1.5, h=hole_height, center=true);
+                    cylinder(r=p1_er+0.75, h=hole_height, center=true);
                     hull() {
                         translate([-p1_pr, l/2, 0])
                             cuboid([w, l, hole_height], chamfer=1);
