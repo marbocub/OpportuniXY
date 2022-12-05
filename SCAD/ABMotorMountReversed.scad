@@ -15,7 +15,7 @@ include <AxisXY.scad>
 include <vitamins/MidAirCylinder.scad>
 
 upper_thickness = 5;
-lower_thickness = 8;
+lower_thickness = 5;
 
 module ABMotorMountReversedLeft(type, reverse)
 {
@@ -25,11 +25,10 @@ module ABMotorMountReversedLeft(type, reverse)
     module motor()
     {
         position = ab_motor_pulley_position(type, reverse, LEFT);
-        zoff = [0, 0, -motor_frame_height(type)];
+        zoff = [0, 0, -motor_frame_height(type)/2 - lower_thickness];
         p2d = position[P2D];
-        angle = motor_angle(type);
 
-        translate(p2d+zoff) rotate([0,0, 90-angle])
+        translate(p2d+zoff) rotate([0,0, 90])
             NEMA(motor_type(type));
 //        translate(p2d+zoff+[10*cos(angle), -10*sin(angle), 0]) rotate([0,0, 90-angle])
 //        translate(p2d+zoff+[10, 0, 0]) rotate([0,0, 90-angle])
@@ -46,11 +45,10 @@ module ABMotorMountReversedRight(type, reverse)
     module motor()
     {
         position = ab_motor_pulley_position(type, reverse, RIGHT);
-        zoff = [0, 0, -motor_frame_height(type)];
+        zoff = [0, 0, -motor_frame_height(type)/2 - lower_thickness];
         p2d = position[P2D];
-        angle = motor_angle(type);
 
-        translate(p2d+zoff) rotate([0,0, -(90-angle)])
+        translate(p2d+zoff) rotate([0,0, -90])
             NEMA(motor_type(type));
 //        translate(p2d+zoff+[-10*cos(angle), -10*sin(angle), 0]) rotate([0,0, -90])
 //            NEMA(motor_type(type));
