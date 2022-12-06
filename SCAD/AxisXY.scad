@@ -92,6 +92,7 @@ function belt_offsets(type) = type[2];
 function gantory(type) = type[3];
 function gantory_length(type) = gantory(type)[0];
 function gantory_extrusion(type) = gantory(type)[1];
+function gantory_screws(type) = gantory(type)[2];
 function gantory_height(type) = extrusion_height(gantory_extrusion(type));
 function gantory_width(type) = extrusion_width(gantory_extrusion(type));
 function corexy_type(type) = type[4];

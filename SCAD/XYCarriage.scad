@@ -104,10 +104,17 @@ module xy_carriage_base(type, size)
     p0 = [p1_pr*2 + p0_pr + belt_offsets(type).x/2, -p0_pr, 0];
     p4 = [p4_pr + belt_offsets(type).x/2, p4_pr, 0];
 
-    pscrew1 = [(size.x-gantory(type)[2][0])/2-carriage_total_heights(type).y, gantory_front + gantory_height/2, 0, 3];
-    pscrew2 = pscrew1 + [(gantory(type)[2][0] - gantory(type)[2][1])/2, 0, 0, 0];
-    pscrew3 = [carriage_total_heights(type).y+5, gantory_front/2+groove_width/4, 0, 5];
+    // pscrewX
+    // [0]: x
+    // [1]: y
+    // [2]: z
+    // [3]: bore
+    pscrew1 = [carriage_total_heights(type).y+5, gantory_front/2+groove_width/4, 0, 5];
 
+    // pfitX
+    // [0]: x
+    // [1]: y
+    // [2]: z
     pfit1  = [groove_width+chamfer+5, gantory_front+gantory_height+chamfer/2, 0];
     pfit2  = pfit1 + [12, 0, 0];
     pfit3  = [groove_width+3, -(-y_carriage_offset(type) + carriage_pitch_x(carriage_types(type).y)/2), 0];
@@ -190,24 +197,30 @@ module xy_carriage_base(type, size)
     }
 
     module xy_carriage_hole_screw() {
+        module make_screw_hole(pos=[0,0,0], bore=0, height=0, screw_length=0, head_depth=0, upper=true) {
+            translate(select(pos, [0,1,2])) {
+                cylinder(r=0.84*bore/2, h=screw_length, center=true);
+                translate([0,0, (upper?1:-1)*height/2]) rotate([0, (upper?180:0), 0])
+                    mid_air_cylinder(r=bore, h=head_depth*2, ir=bore/2, center=true);
+                translate([0,0, (upper?1:-1)*screw_length/4])
+                    cylinder(r=bore/2, h=screw_length/2, center=true);
+            }
+        }
+
         head_depth = 5;
         print_thick = 0.2;
-        //screw_length = height - head_depth*2 - print_thick*2;
         screw_length = height - head_depth*2 + print_thick*2;
-        for (p=[
-            [p0, p0_bore, -1], 
-            [p4, p4_bore,  1], 
-            [pscrew1, pscrew1[3], [-1,1]], 
-            [pscrew2, pscrew2[3], [-1,1]],
-            [pscrew3, pscrew3[3],    1  ]
-        ]) translate(select(p[0], [0,1,2])) {
-            cylinder(r=0.84*p[1]/2, h=screw_length, center=true);
-            for (i=p[2]) {
-                translate([0,0, i*height/2]) rotate([0, i>0?180:0, 0])
-                    mid_air_cylinder(r=p[1], h=head_depth*2, ir=p[1]/2, center=true);
-                translate([0,0, i*screw_length/4])
-                    cylinder(r=p[1]/2, h=screw_length/2, center=true);
-            }
+        make_screw_hole(pos=p0, bore=p0_bore, height=height, screw_length=screw_length, head_depth=head_depth, upper=false);
+        make_screw_hole(pos=p4, bore=p4_bore, height=height, screw_length=screw_length, head_depth=head_depth, upper=true);
+        make_screw_hole(pos=pscrew1, bore=pscrew1[3], height=height, screw_length=screw_length, head_depth=head_depth, upper=true);
+        for (posx=gantory_screws(type)) {
+            pos = [
+                (size.x-posx)/2-carriage_total_heights(type).y,
+                gantory_front + gantory_height/2,
+                0
+            ];
+            make_screw_hole(pos=pos, bore=3, height=height, screw_length=screw_length, head_depth=head_depth, upper=true);
+            make_screw_hole(pos=pos, bore=3, height=height, screw_length=screw_length, head_depth=head_depth, upper=false);
         }
 
         carriage  = carriage_types(type).y;
