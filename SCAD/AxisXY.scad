@@ -67,7 +67,7 @@ X5SA_330_Rail = [
     [400, 400, 500], 
     [MGN12H_carriage, MGN12H_carriage, MGN12H_carriage], 
     [4, 7.6, 9.5],
-    [450, E2020, [431.2, 418.4]],
+    [450, E1515, [431.2, 418.4]],
     coreXY_2GT_mixed_idler,
     [MotorType, E2020]
 ];
