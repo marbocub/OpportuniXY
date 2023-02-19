@@ -16,10 +16,8 @@ include <Config.scad>
 
 reverse = true;
 
-module PreviewAssembly(pos=[0, 0, 0])
+module PreviewAssembly(pos=[0, 0, 0], all=true)
 {
-    all=true;
-
     pos = pos + [0, reverse ? -20 : 0, 0];
 
     if (all) {
