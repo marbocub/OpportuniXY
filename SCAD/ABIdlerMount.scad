@@ -109,7 +109,7 @@ module ab_idler_mount_mask(type, reverse, side)
 
 module ab_idler_mount_body(type, reverse, side)
 {
-    thickness = 5.0;
+    thickness = 7.5;
     chamfer = 5.0;
     frame_height = motor_frame_height(type);
     height = frame_height + thickness*2;
