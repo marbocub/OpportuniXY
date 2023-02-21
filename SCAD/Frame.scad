@@ -43,7 +43,7 @@ module Frame(frame_type = X5SA_330_Frame)
     extrusion = frame_extrusion(frame_type);
     h = extrusion_width(extrusion.x);
 
-    color("dimgrey") {
+    color("silver") {
         up(z/2+h) {
             // X beam
             yrot(90) for (p=square([z+h, y+h], center=true)) move(p)
