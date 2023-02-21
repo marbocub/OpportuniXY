@@ -32,6 +32,7 @@ MotorType=NEMA17_34;
 MotorBeltGap = 1;
 MotorXOffset = (NEMA_hole_pitch(MotorType)+5)/2 + pulley_flange_dia(TopIdlerType)/2 + 10;
 MotorYOffset = (NEMA_hole_pitch(MotorType)+5)/2 + MotorBeltGap - pulley_ir(TopIdlerType);
+//TopIdlerXOffset = MotorXOffset - NEMA_hole_pitch(MotorType)/2;
 TopIdlerXOffset = 0;
 TopIdlerYOffset = MotorYOffset + (NEMA_hole_pitch(MotorType)+5)/2 - pulley_flange_dia(TopIdlerType)/2;
 
